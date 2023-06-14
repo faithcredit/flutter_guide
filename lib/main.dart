@@ -12,15 +12,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Personal Expenses',
       theme: ThemeData(
+        datePickerTheme: DatePickerThemeData(
+          headerBackgroundColor: Colors.blue,),
         colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: Colors.purple, accentColor: Colors.blue),
+            primarySwatch: Colors.blue, accentColor: Colors.blue),
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
-                titleSmall: TextStyle(
-              fontFamily: 'OpenSans',
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            )),
+              titleSmall: TextStyle(
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
         appBarTheme: AppBarTheme(
           titleTextStyle: TextStyle(
             fontFamily: 'OpenSans',
@@ -57,22 +60,21 @@ class _MyHomePageState extends State<MyHomePage> {
     // ),
   ];
 
- 
   List<Transaction> get _recentTransactions {
-  return _userTransactions.where((tx) {
-    return tx.date!.isAfter(
-      DateTime.now().subtract(
-        Duration(days: 7),
-      ),
-    );
-  }).toList();
-}
+    return _userTransactions.where((tx) {
+      return tx.date!.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(String txTitle, double txAmount, DateTime choseDate) {
     final newTx = Transaction(
       title: txTitle,
-      amount: txAmount,
-      date: DateTime.now(),
+      amount: txAmount, 
+      date: choseDate,
       id: DateTime.now().toString(),
     );
 
