@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './widgets/transaction_list.dart';
@@ -119,14 +120,21 @@ class _MyHomePageState extends State<MyHomePage> {
     final mediaQuery = MediaQuery.of(context);
     final isLandscape =
         mediaQuery.orientation == Orientation.landscape;
-    final appBar = AppBar(
+    final PreferredSizeWidget appBar =Platform.isIOS ? CupertinoNavigationBar(
+      middle: Text('Personal Expenses',),
+      trailing: Row(children: [
+        GestureDetector(
+          child: Icon(CupertinoIcons.add),
+          onTap: () => {_startAddNewTransactioin(context)},)
+      ],),
+    ) as PreferredSizeWidget : AppBar(
       title: Text(
         'Personal Expenses',
       ),
       actions: [
         IconButton(
             onPressed: () => {_startAddNewTransactioin(context)},
-            icon: Icon(Icons.add))
+            icon: Icon(Icons.add)),
       ],
     );
     final txListWidget = Container(
@@ -135,9 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 mediaQuery.padding.top) *
             0.7,
         child: TransactionList(_userTransactions,_deleteTransaction));
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
+    final pageBody= SingleChildScrollView(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -176,7 +182,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   : txListWidget,
           ],
         ),
-      ),
+      );
+    return Platform.isIOS ? CupertinoPageScaffold(child: pageBody, navigationBar: appBar as ObstructingPreferredSizeWidget,) : Scaffold(
+      appBar: appBar,
+      body: pageBody,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Platform.isIOS ? Container(): FloatingActionButton(
         child: Icon(Icons.add),
