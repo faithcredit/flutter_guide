@@ -23,18 +23,19 @@ class Chart extends StatelessWidget {
           }
         }
 
-        print(DateFormat.E().format(weekDay).substring(0,1));
+        print(DateFormat.E().format(weekDay).substring(0, 1));
         print(totalSum);
         return {'day': DateFormat.E().format(weekDay), 'amount': totalSum};
       },
     ).reversed.toList();
   }
 
-double get totalSpending {
-  return groupedTransactionValues.fold(0.0, (double sum, item) {
-    return sum + (item['amount'] as double?)!.toDouble();
-  });
-}
+  double get totalSpending {
+    return groupedTransactionValues.fold(0.0, (double sum, item) {
+      return sum + (item['amount'] as double?)!.toDouble();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     print(groupedTransactionValues);
@@ -49,11 +50,13 @@ double get totalSpending {
             ...groupedTransactionValues.map((data) {
               // return Text('${data['day']} : ${data['amount']}');
               return Flexible(
-                fit:FlexFit.tight,
+                fit: FlexFit.tight,
                 child: ChartBar(
-                  data['day'] as String, 
-                  data['amount'] as double, 
-                  totalSpending == 0.0 ? 0.0 : (data['amount'] as double)/totalSpending),
+                    data['day'] as String,
+                    data['amount'] as double,
+                    totalSpending == 0.0
+                        ? 0.0
+                        : (data['amount'] as double) / totalSpending),
               );
             }),
           ],

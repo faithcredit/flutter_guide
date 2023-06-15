@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
       title: 'Personal Expenses',
       theme: ThemeData(
         datePickerTheme: DatePickerThemeData(
-          headerBackgroundColor: Colors.blue,),
+          headerBackgroundColor: Colors.blue,
+        ),
         colorScheme: ColorScheme.fromSwatch(
             primarySwatch: Colors.blue, accentColor: Colors.blue),
         fontFamily: 'Quicksand',
@@ -73,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _addNewTransaction(String txTitle, double txAmount, DateTime choseDate) {
     final newTx = Transaction(
       title: txTitle,
-      amount: txAmount, 
+      amount: txAmount,
       date: choseDate,
       id: DateTime.now().toString(),
     );
@@ -98,26 +99,35 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // backgroundColor: Colors.red,
-        title: Text(
-          'Personal Expenses',
-          // style: TextStyle(fontFamily:'OpenSans'),
-        ),
-        actions: [
-          IconButton(
-              onPressed: () => {_startAddNewTransactioin(context)},
-              icon: Icon(Icons.add))
-        ],
+    final appBar = AppBar(
+      title: Text(
+        'Personal Expenses',
       ),
+      actions: [
+        IconButton(
+            onPressed: () => {_startAddNewTransactioin(context)},
+            icon: Icon(Icons.add))
+      ],
+    );
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Chart(_recentTransactions),
-            TransactionList(_userTransactions),
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.4,
+                child: Chart(_recentTransactions)),
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.6,
+                child: TransactionList(_userTransactions)),
           ],
         ),
       ),
