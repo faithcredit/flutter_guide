@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
- final Function deleteTx;
+  final Function deleteTx;
 
   TransactionList(this.transactions, this.deleteTx);
 
@@ -22,7 +22,7 @@ class TransactionList extends StatelessWidget {
                   height: 10,
                 ),
                 Container(
-                    height: constraints.maxHeight *0.6,
+                    height: constraints.maxHeight * 0.6,
                     child: Image.asset(
                       'assets/images/home.png',
                       fit: BoxFit.cover,
@@ -54,11 +54,23 @@ class TransactionList extends StatelessWidget {
                   subtitle: Text(
                     DateFormat.yMMMd().format(transactions[index].date!),
                   ),
-                 trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      color: Theme.of(context).errorColor,
-                      onPressed: () => deleteTx(transactions[index].id),
-                    ),
+                  trailing: MediaQuery.of(context).size.width > 460
+                      ? TextButton.icon(
+                          icon: const Icon(Icons.delete),
+                          label: Text(
+                            'Delete',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.error,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onPressed: () => deleteTx(transactions[index].id),
+                        )
+                      : IconButton(
+                          icon: const Icon(Icons.delete),
+                          color:Theme.of(context).colorScheme.error,
+                          onPressed: () => deleteTx(transactions[index].id),
+                        ),
                 ),
               );
             },
